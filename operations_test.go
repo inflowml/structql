@@ -1,6 +1,6 @@
-// Package storage implements the Database structure.
+// Package main implements the Database structure.
 // This file contains tests for parse.go.
-package storage
+package main
 
 import (
 	"fmt"
