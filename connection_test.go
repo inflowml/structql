@@ -1,6 +1,6 @@
-// Package storage implements the Database structure.
+// Package structql implements the Database structure.
 // This file contains tests for manager.go.
-package main
+package structql
 
 import (
 	"testing"

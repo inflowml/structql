@@ -1,6 +1,6 @@
-// Package main implements the Database structure.
+// Package structql implements the Database structure.
 // This file contains tests for parse.go.
-package main
+package structql
 
 import (
 	"fmt"

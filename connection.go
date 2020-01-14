@@ -1,4 +1,4 @@
-package main
+package structql
 
 import (
 	"database/sql"
