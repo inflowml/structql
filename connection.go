@@ -23,8 +23,8 @@ type ConnectionConfig struct {
 	Password string
 }
 
-// Connect establishes a connection to the SQL database specified by the
-// INFLOW_SERVICE, CLOUD_SQL_PORT, and CLOUD_SQL_PW environment variables.
+// Connect establishes and returns a connection to the SQL database
+// specified by the ConnectionConfig
 func Connect(creds ConnectionConfig) (*Connection, error) {
 	// Set this in app.yaml when running in production.
 	user := creds.User
