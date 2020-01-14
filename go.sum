@@ -2,6 +2,8 @@ github.com/go-kit/kit v0.9.0/go.mod h1:xBxKIO96dXMWWy0MnWVtmwkA9/13aqxPnvrjFYMA2
 github.com/golang/protobuf v1.3.1/go.mod h1:6lQm79b+lXiMfvg/cZm0SGofjICqVBUtrP5yJMmIC1U=
 github.com/inflowml/inflow-micro v0.0.0-20190715154756-3bf9f8c7c670 h1:sulbyjUOQun9Ee9is1dVIBq5emvUbNYtm0hS32ZTH2g=
 github.com/inflowml/inflow-micro v0.0.0-20190715154756-3bf9f8c7c670/go.mod h1:l20PJAgJsArzL7XdnngPK5lqMugQnY3/mPo8/f4MUfE=
+github.com/inflowml/logger v0.0.0-20200102204120-475c1413b15a h1:NtqTDiQ2LOoEnv93Qyl3MASxoFW3BCUMZ8sW4ovD6cc=
+github.com/inflowml/logger v0.0.0-20200102204120-475c1413b15a/go.mod h1:FaeQKkGG1jSat1C4bvNtkDTkqIOiUwFD87AYYxONVkA=
 github.com/lib/pq v1.1.1/go.mod h1:5WUZQaWbwv1U+lTReE5YruASi9Al49XbQIvNi/34Woo=
 github.com/lib/pq v1.3.0 h1:/qkRGz8zljWiDcFvgpwUpwIAPu3r07TDvs3Rws+o/pU=
 github.com/lib/pq v1.3.0/go.mod h1:5WUZQaWbwv1U+lTReE5YruASi9Al49XbQIvNi/34Woo=

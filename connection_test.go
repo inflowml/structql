@@ -8,7 +8,9 @@ import (
 
 // TestConnect tests the Connect() and Close() methods.
 func TestConnectClose(t *testing.T) {
-	conn, err := Connect()
+	creds := GetTestCreds()
+
+	conn, err := Connect(creds)
 	if err != nil {
 		t.Fatalf("TestConnectClose() - failed to connect: %v.", err)
 	}
@@ -19,9 +21,21 @@ func TestConnectClose(t *testing.T) {
 
 // setup asserts the creation of a Database connection.
 func setup(t *testing.T) *Connection {
-	conn, err := Connect()
+	creds := GetTestCreds()
+
+	conn, err := Connect(creds)
 	if err != nil {
 		t.Fatalf("Failed to connect to SQL database %q during setup: %v.", conn.name, err)
 	}
 	return conn
+}
+
+func GetTestCreds() ConnectionConfig {
+	return ConnectionConfig{
+		User:     "postgres",
+		Password: "postgres",
+		Database: "testdb",
+		Host:     "localhost",
+		Port:     "5432",
+	}
 }

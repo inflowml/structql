@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"reflect"
 
-	"github.com/inflowml/inflow-micro/common/logger"
+	"github.com/inflowml/logger"
 )
 
 // parseResponse parses the given SQL rows into a slice of structures with the

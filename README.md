@@ -1,52 +1,60 @@
-# Database
-This library abstracts the connection and management of the cloud sql proxy required in order to store structured data on GCP.
+# StructQL
+This package abstracts the connection and management of a Postgres database server using native go structs.
 
-## Logger
-For logs related to your SQL export SQL_LOG=1 (This is the default using development configurations)
-
-## Setup
-### Installation
-1. cd `./common/database/proxy`
-2. Execute `./install.sh`
-3. Execute `./start_proxy.sh`
-4. Open a new terminal
-5. From proj root: `source ./configure.sh`
-6. Use storage functions to interact with database
+## StructQL Logs
+StructQL uses github.com/inflowml/logger for all logging. These will appear as standard out. In order to turn off StructQL logs export SQL_LOG=0.
 
 ## Storage Functions
 Part of the `github.com/inflowml/inflow-micro/common/database/storage` package.
 ### Connect
 Connects to the appropriate db based on the micro-service and returns the connection structure.
 ```go
-func Connect() (*Connection, error)
+func Connect(creds ConnectionConfig) (*Connection, error)
 ```
 ### Close
 Closes the connection to the database, must be called when the microservice is finished using the db. Connections should only be closed when the micro-service terminates or is killed if possible.
 ```go
 func (conn *Connection) Close() error
 ```
-### CreateTable
-Create table accepts the name of the table to be created and a splice of ColumnHeaders representing the data to be stored in each column.
+### CreateTableFromObject
+Create table accepts the name of the table to be created and an interface representing the table columns.
 ```go
-func (conn *Connection) CreateTable(table string, headers []dataforms.ColumnHeader) error
+func (conn *Connection) CreateTableFromObject(table string, object interface{}) error {
+```
+A table is created out of a native go struct with StructQL tags. For example in order to create a `person` table with columns id, name, age, DNA the following code would be appropriate.
+```go
+type Person struct {
+	ID   int32  `sql:"id" typ:"SERIAL" opt:"PRIMARY KEY"`
+	Name string `sql:"name"`
+	Age  int32  `sql:"age"`
+	DNA  []byte `sql:"dna"`
+}
+...
+err := conn.CreateTableFromObject("person", Person{})
+if err != nil {
+	// Handle Error
+}
+...
 ```
 ### InsertObject
 InsertObject accepts a table name and an object interface and inserts it into the database
 ```go
 func (conn *Connection) InsertObject(table string, object interface{}) error
 ```
-The object interface must be tagged with the SQL Column names. Ref the following example of an acceptable struct which corresponds to a Person database table with columns name, age, and dna.
+The object interface must be tagged with the SQL Column names. Ref the following example of an acceptable struct which corresponds to a Person database table with columns id, name, age, and dna.
 ```go
 type Person struct {
+	ID   int32  `sql:"id" typ:"SERIAL" opt:"PRIMARY KEY"`
 	Name string `sql:"name"`
 	Age  int32  `sql:"age"`
 	DNA  []byte `sql:"dna"`
 }
-``` 
+```
+In this case every time a new row is inserted a unique id will be assigned in the id column of the table. This will be automatically done by Postgres.
 ### SelectFrom
 Accepts a struct type, and table name and returns the query as a slice of given struct. Note that the fields in the given struct are the columns that are listed in the `SELECT <Columns>` portion of the SQL query.
 ```go
-func (conn *Connection) SelectFrom(prototype reflect.Type, table string) (interface{}, error) 
+func (conn *Connection) SelectFrom(object interface{}, table string) (interface{}, error) 
 ```
 The following is an example of a struct type that would result in the query for Name and Age from a table
 ```go
@@ -58,7 +66,7 @@ type Person struct {
 ### SelectFromWhere
 Accepts a struct type, table name, and conditional and returns the query as a slice of given struct. Note that the fields in the given struct are the columns that are listed in the SELECT <Columns> portion of the SQL query. Additonally the conditional must be a string using standard SQL comparisons such as `age >= 50 AND name == John`
 ```go
-func (conn *Connection) SelectFrom(prototype reflect.Type, table string, conditional string) (interface{}, error) 
+func (conn *Connection) SelectFromWhere(object interface{}, table string, conditional string) (interface{}, error) 
 ```
 The following is an example of a struct type that would result in the query for Name and Age from a table
 ```go
@@ -87,19 +95,6 @@ type ColumnHeader struct {
 }
 ```
 
-## Connect Via Terminal
-After succesfully installing the proxy you can connect to the DB via PostgreSQL by executing `psql -U test -h localhost -p 3306`
-
-## Notes
-- In production all microservices have their own database, this means a microservice can only access it's own data.
-- In development all microservices share a test database, this database will not be available in production.  Ensure that you can programatically set up the tables you need or contact a DB admin to set up production tables in advance.
-- All communication between the proxy and the DB is SSL encrypted, local connection between an application and the proxy is not.
-
-## Connect Via Terminal
-After succesfully installing the proxy you can connect to the DB via PostgreSQL by executing `psql -U test -h localhost -p 3306`
-
-## Notes
-- In production all microservices have their own database, this means a microservice can only access it's own data.
-- In development all microservices share a test database, this database will not be available in production.  Ensure that you can programatically set up the tables you need or contact a DB admin to set up production tables in advance.
-- All communication between the proxy and the DB is SSL encrypted, local connection between an application and the proxy is not.
+## Testing Configurations
+In order to run StructQL tests a local postgres server is required. One can be installed through by running `sudo install.sh` in the testutils directory. Once installed run test-srv.sh. Once you are finished with the server run `sudo service postgresql stop`
 

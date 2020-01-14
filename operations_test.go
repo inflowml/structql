@@ -266,7 +266,9 @@ func TestDeleteObject(t *testing.T) {
 // createTableUnsafe constructs a database Connection and creates a table with
 // the given name from the provided object.  Failure to do so results in a panic.
 func createTableUnsafe(table string, object interface{}) *Connection {
-	conn, err := Connect()
+	creds := GetTestCreds()
+
+	conn, err := Connect(creds)
 	if err != nil {
 		panic(fmt.Sprintf("Failed to construct Connection: %v.", err))
 	}

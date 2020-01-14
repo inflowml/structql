@@ -101,6 +101,8 @@ func TestGetColumnType(t *testing.T) {
 // TestCreateDropTable tests the (*Connection).CreateTableFromObject() and
 // (*Connection).DropTable() methods.
 func TestCreateDropTable(t *testing.T) {
+	creds := GetTestCreds()
+
 	tests := []struct {
 		name    string
 		object  interface{}
@@ -156,7 +158,7 @@ func TestCreateDropTable(t *testing.T) {
 	}
 
 	// Connect to the test database.
-	conn, err := Connect()
+	conn, err := Connect(creds)
 	if err != nil {
 		t.Fatalf("Failed to connect to database: %v.", err)
 	}

@@ -3,9 +3,8 @@ package storage
 import (
 	"database/sql"
 	"fmt"
-	"os"
 
-	"github.com/inflowml/inflow-micro/common/logger"
+	"github.com/inflowml/logger"
 	_ "github.com/lib/pq" // The PostgreSQL driver.
 )
 
@@ -15,15 +14,25 @@ type Connection struct {
 	name string
 }
 
+//ConnectionConfig are required to establish a connection to a Db
+type ConnectionConfig struct {
+	Host     string
+	Port     string
+	Database string
+	User     string
+	Password string
+}
+
 // Connect establishes a connection to the SQL database specified by the
 // INFLOW_SERVICE, CLOUD_SQL_PORT, and CLOUD_SQL_PW environment variables.
-func Connect() (*Connection, error) {
+func Connect(creds ConnectionConfig) (*Connection, error) {
 	// Set this in app.yaml when running in production.
-	user := os.Getenv("INFLOW_SERVICE")
-	database := os.Getenv("INFLOW_SERVICE")
-	port := os.Getenv("CLOUD_SQL_PORT")
-	pw := os.Getenv("CLOUD_SQL_PW")
-	connectionInfo := fmt.Sprintf("database=%s user=%s password=%s port=%s host=localhost sslmode=disable", database, user, pw, port)
+	user := creds.User
+	database := creds.Database
+	host := creds.Host
+	port := creds.Port
+	pw := creds.Password
+	connectionInfo := fmt.Sprintf("database=%s user=%s password=%s port=%s host=%s", database, user, pw, port, host)
 
 	// Attempt to open the database (this does NOT initiate a connection).
 	sqlDB, err := sql.Open("postgres", connectionInfo)

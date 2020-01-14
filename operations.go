@@ -6,8 +6,8 @@ import (
 	"reflect"
 	"strings"
 
-	"github.com/inflowml/inflow-micro/common/database/dataforms"
-	"github.com/inflowml/inflow-micro/common/logger"
+	"github.com/inflowml/logger"
+	"github.com/inflowml/structql/dataforms"
 )
 
 // SelectFrom executes a SELECT FROM query on the Connection receiver over the

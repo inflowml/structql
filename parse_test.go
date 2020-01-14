@@ -10,6 +10,8 @@ import (
 
 // TestParseResponse tests the parseResponse() method.
 func TestParseResponse(t *testing.T) {
+	creds := GetTestCreds()
+
 	type Person struct {
 		Name string  `sql:"name"`
 		Age  int32   `sql:"age"`
@@ -37,7 +39,7 @@ func TestParseResponse(t *testing.T) {
 	}
 
 	// Create a suitable table in the test database.
-	conn, err := Connect()
+	conn, err := Connect(creds)
 	if err != nil {
 		t.Fatalf("Failed to connect to database: %v.", err)
 	}
