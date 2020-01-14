@@ -7,7 +7,6 @@ import (
 	"strings"
 
 	"github.com/inflowml/logger"
-	"github.com/inflowml/structql/dataforms"
 )
 
 // SelectFrom executes a SELECT FROM query on the Connection receiver over the
@@ -93,34 +92,6 @@ func (conn *Connection) SelectForUpdate(object interface{}, table string, cond s
 
 	// Parse the rows from the query into a slice of Go objects based on the prototype.
 	return parseResponse(rows, object)
-}
-
-// Insert inserts the given Entries into the provided table using the Connection
-// receiver.
-//
-// WARNING: This function is deprecated; use InsertObject() instead.
-func (conn *Connection) Insert(table string, entries []dataforms.Entry) error {
-	// Construct two slices to hold the values and columns of the Entries.
-	numEntries := len(entries)
-	vals := make([]string, 0, numEntries)
-	cols := make([]string, 0, numEntries)
-
-	// Append each Entry to the slices using the default Go representation.
-	for _, entry := range entries {
-		col := fmt.Sprintf("%v", entry.ColumnName)
-		val := fmt.Sprintf("%v", entry.Value)
-		vals = append(vals, val)
-		cols = append(cols, col)
-	}
-
-	// Format the columns and values into comma-separated lists.
-	colList := strings.Join(cols, ", ")
-	valList := strings.Join(cols, ", ")
-
-	// Execute the insertion on the SQL database.
-	stmt := fmt.Sprintf("INSERT INTO %s (%s) VALUES (%s) ON CONFLICT DO NOTHING/UPDATE;", table, colList, valList)
-	_, err := conn.exec(stmt)
-	return err
 }
 
 // InsertObject inserts the given object into the specified table and returns
