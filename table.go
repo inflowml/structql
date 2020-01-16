@@ -70,6 +70,7 @@ func (conn *Connection) CreateTableFromObject(table string, object interface{}) 
 	// Create the table (if it does not already exist).
 	schema := strings.Join(headers, ", ")
 	stmt := fmt.Sprintf("CREATE TABLE IF NOT EXISTS %s (%s);", table, schema)
+	logger.SQL(stmt)
 	_, err := conn.exec(stmt)
 	if err == nil {
 		logger.SQL("Table created successfully ")
