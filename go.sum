@@ -1,4 +1,6 @@
 github.com/go-kit/kit v0.9.0/go.mod h1:xBxKIO96dXMWWy0MnWVtmwkA9/13aqxPnvrjFYMA2as=
+github.com/go-sql-driver/mysql v1.5.0 h1:ozyZYNQW3x3HtqT1jira07DN2PArx2v7/mN66gGcHOs=
+github.com/go-sql-driver/mysql v1.5.0/go.mod h1:DCzpHaOWr8IXmIStZouvnhqoel9Qv2LBy8hT2VhHyBg=
 github.com/golang/protobuf v1.3.1/go.mod h1:6lQm79b+lXiMfvg/cZm0SGofjICqVBUtrP5yJMmIC1U=
 github.com/inflowml/inflow-micro v0.0.0-20190715154756-3bf9f8c7c670 h1:sulbyjUOQun9Ee9is1dVIBq5emvUbNYtm0hS32ZTH2g=
 github.com/inflowml/inflow-micro v0.0.0-20190715154756-3bf9f8c7c670/go.mod h1:l20PJAgJsArzL7XdnngPK5lqMugQnY3/mPo8/f4MUfE=

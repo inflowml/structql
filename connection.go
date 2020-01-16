@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 
+	_ "github.com/go-sql-driver/mysql" // The mysql driver
 	"github.com/inflowml/logger"
 	_ "github.com/lib/pq" // The PostgreSQL driver.
 )
@@ -21,6 +22,7 @@ type ConnectionConfig struct {
 	Database string
 	User     string
 	Password string
+	Driver   Driver
 }
 
 // Connect establishes and returns a connection to the SQL database
@@ -86,21 +88,3 @@ func (conn *Connection) query(stmt string) (*sql.Rows, error) {
 func (conn *Connection) queryRow(stmt string, args ...interface{}) *sql.Row {
 	return conn.db.QueryRow(stmt, args...)
 }
-
-/*func setDB(service string) error {
-	stmt := fmt.Sprintf("\\c %s", service)
-	if _, err := db.Exec(stmt); err == nil {
-		return nil
-	}
-	logger.Warning("Service Does Not Have A DB Creating DB: %s", service)
-	return createDB(service)
-}
-
-func createDB(name string) error {
-	stmt := fmt.Sprintf("\\CREATE TABLE %s", name)
-	if resp, err := db.Exec(stmt); err != nil {
-		logger.Error("%v", resp)
-		return fmt.Errorf("Failed To Create New DB: %v", err)
-	}
-	return nil
-}*/

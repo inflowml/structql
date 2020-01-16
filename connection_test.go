@@ -3,6 +3,7 @@
 package structql
 
 import (
+	"os"
 	"testing"
 )
 
@@ -31,11 +32,17 @@ func setup(t *testing.T) *Connection {
 }
 
 func GetTestCreds() ConnectionConfig {
+	driverEnv := os.Getenv("SQL_DRIVER")
+	driver := Postgres
+	if driverEnv == "MY_SQL" {
+		driver = MySQL
+	}
 	return ConnectionConfig{
-		User:     "postgres",
-		Password: "postgres",
+		User:     "StructqlUser",
+		Password: "StructqlPW",
 		Database: "testdb",
 		Host:     "localhost",
 		Port:     "5432",
+		Driver:   driver,
 	}
 }

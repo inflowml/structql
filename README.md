@@ -9,10 +9,10 @@ Part of the `github.com/inflowml/inflow-micro/common/database/storage` package.
 ### Connect
 Connects to the appropriate db based on the micro-service and returns the connection structure.
 ```go
-func Connect(creds ConnectionConfig) (*Connection, error)
+func Connect(config ConnectionConfig) (*Connection, error)
 ```
 ### Close
-Closes the connection to the database, must be called when the microservice is finished using the db. Connections should only be closed when the micro-service terminates or is killed if possible.
+Closes the connection to the database, must be called when the microservice is finished using the db. Connections should only be closed when the program terminates or is killed if possible.
 ```go
 func (conn *Connection) Close() error
 ```
@@ -59,6 +59,7 @@ func (conn *Connection) SelectFrom(object interface{}, table string) (interface{
 The following is an example of a struct type that would result in the query for Name and Age from a table
 ```go
 type Person struct {
+	ID   int32  `sql:"id" typ:"SERIAL" opt:"PRIMARY KEY"`
 	Name string `sql:"name"`
 	Age  int32  `sql:"age"`
 }
@@ -71,27 +72,9 @@ func (conn *Connection) SelectFromWhere(object interface{}, table string, condit
 The following is an example of a struct type that would result in the query for Name and Age from a table
 ```go
 type Person struct {
+	ID   int32  `sql:"id" typ:"SERIAL" opt:"PRIMARY KEY"`
 	Name string `sql:"name"`
 	Age  int32  `sql:"age"`
-}
-```
-
-## Data Formats
-The following are structs used to interact with InFlow storage that can be accessed via `dataforms.<Struct>` after importing `github.com/inflowml/inflow-micro/common/database/dataforms`
-### SQLTypes
-SQLTypes are the accepted storage types for InFlow databases. They can be accessed as dataforms.<SQLType>. The following are valid SQLTypes
-- `IntSQL`
-- `StringSQL`
-- `TimeSQL`
-- `JSONSQL`
-- `BoolSQL`
-
-### ColumnHeader
-The ColumnHeader struct is used to define columns when creating a new table. It is comprised of a name of type string and SQLType of type SQLType
-```go
-type ColumnHeader struct {
-	Name    string
-	SQLType SQLType
 }
 ```
 
