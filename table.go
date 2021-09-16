@@ -6,7 +6,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/inflowml/inflow-micro/common/logger"
+	"github.com/inflowml/logger"
 )
 
 // Count mimics the PSQL format for Count responses in a Go Struct

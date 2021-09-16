@@ -5,7 +5,6 @@ This package abstracts the connection and management of a Postgres database serv
 StructQL uses github.com/inflowml/logger for all logging. These will appear as standard out. In order to turn off StructQL logs export SQL_LOG=0.
 
 ## Storage Functions
-Part of the `github.com/inflowml/inflow-micro/common/database/storage` package.
 ### Connect
 Connects to the appropriate db based on the micro-service and returns the connection structure.
 ```go
