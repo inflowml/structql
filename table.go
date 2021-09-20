@@ -137,6 +137,27 @@ func (conn *Connection) CountRows(table string) (int64, error) {
 	return val, nil
 }
 
+// CountRowsWhere accepts a table name and condition statement
+// and returns the number of rows in that table that meet the condition
+func (conn *Connection) CountRowsWhere(table string, cond string) (int64, error) {
+	stmt := fmt.Sprintf("SELECT COUNT(*) FROM %s WHERE %s;", table, cond)
+
+	rows, err := conn.query(stmt)
+	if err != nil {
+		return 0, fmt.Errorf("failed to get row count for table %x: %v", table, err)
+	}
+
+	cnt, err := parseResponse(rows, Count{})
+	if err != nil {
+		return 0, fmt.Errorf("failed to parse count response: %v", err)
+	}
+
+	// Extract Count from parsed struct
+	val := cnt[0].(Count).Count
+
+	return val, nil
+}
+
 // OldestEntry returns the oldest row in the given table
 func (conn *Connection) OldestEntry(object interface{}, table string, timestampCol string) (interface{}, error) {
 
